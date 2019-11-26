@@ -3,11 +3,31 @@
 &nbsp &nbsp <%= link_to "New Todo Item", new_todo_path %>
 <br>
 <br>
-<% @todos.each do |todo| %>
-    <li class = "list-group-item"><%= link_to todo.title, todo_path(todo.id)%> &nbsp &nbsp
+<% for i in @todos.length do %>
+    
+    <li class = "list-group-item"><%= form_for @todos[i] do |f| %>
+        <div id ="<%= i %>", onclick="hideElement()">
+        <%= label_tag(:isCompleted,"" )%>
+        <%= f.check_box :isCompleted %> 
+        
+        </div>
+
+        <script type="text/javascript"> 
+        function hideElement() {
+            var id = "<%= i %>" 
+            element = document.getElementById(id); 
+            element.style.visibility = 'hidden'; 
+        } 
+    </script> 
+    <% end %>
+    
+    <%= link_to todo.title, todo_path(todo.id)%> &nbsp &nbsp
     <%= link_to  '<button type= "button" class="btn btn-outline-primary"> edit </button>'.html_safe, edit_todo_path(todo[:id])%> 
     <%= link_to  '<button type= "button" class="btn btn-outline-primary"> delete </button>'.html_safe, todo, method: :delete, data: {confirm: "Are you sure you want to delete it?"}%> </button> </li> 
+
+ 
     <br>
 <% end %>
+
 
 

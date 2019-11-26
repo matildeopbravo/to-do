@@ -1,6 +1,7 @@
 class TodosController < ApplicationController
+
     def index
-    @todos = Todo.all
+     @todos = Todo.all
     end
 
     def show
@@ -28,8 +29,9 @@ class TodosController < ApplicationController
         Todo.find(params[:id]).destroy
         redirect_to root_path
     end
+
 private
     def todo_params
-        params.require(:todo).permit(:title,:description)
+        params.require(:todo).permit(:title,:description,:isCompleted)
     end
 end
