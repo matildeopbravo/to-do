@@ -3,22 +3,20 @@
 &nbsp &nbsp <%= link_to "New Todo Item", new_todo_path %>
 <br>
 <br>
-<% for i in @todos.length do %>
-    
-    <li class = "list-group-item"><%= form_for @todos[i] do |f| %>
-        <div id ="<%= i %>", onclick="hideElement()">
+<% @todos.each do |todo|  %>
+    <li class = "list-group-item"><%= form_for todo do |f| %>
+        <div id="<%= @todo %>", onclick="hideElement()">
         <%= label_tag(:isCompleted,"" )%>
-        <%= f.check_box :isCompleted %> 
+        <%= f.check_box :isCompleted %>
         
         </div>
 
         <script type="text/javascript"> 
-        function hideElement() {
-            var id = "<%= i %>" 
-            element = document.getElementById(id); 
+        function hideElement() { 
+            element = document.getElementById(checkbox"); 
             element.style.visibility = 'hidden'; 
         } 
-    </script> 
+    </script>       
     <% end %>
     
     <%= link_to todo.title, todo_path(todo.id)%> &nbsp &nbsp
