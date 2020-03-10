@@ -1,15 +1,22 @@
 {
-  "name": "todoApp2",
-  "private": true,
-  "dependencies": {
-    "@rails/actioncable": "^6.0.0",
-    "@rails/activestorage": "^6.0.0",
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "^4.2.0",
-    "turbolinks": "^5.2.0"
+  "name": "main-todo",
+  "version": "1.0.0",
+  "description": "To do app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
   },
-  "version": "0.1.0",
-  "devDependencies": {
-    "webpack-dev-server": "^3.9.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matildeopbravo/to-do.git"
+  },
+  "keywords": [
+    "to-do"
+  ],
+  "author": "Matilde Bravo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matildeopbravo/to-do/issues"
+  },
+  "homepage": "https://github.com/matildeopbravo/to-do#readme"
 }
