@@ -1,6 +1,12 @@
 <head> <%= stylesheet_link_tag 'bootstrap.min' %> </head>
-<h1> Todo Show Page </h1>
+<main class="mt-5 pt-5">
+
+<div class="text-center">
+<li class="list-group-item">
+<h1> <p class="text-primary">Todo Show Page</p></h1>
 <p> Title : <%= @todo['title']%></p>
 <p> Description : <%= @todo['description']%></p>
+
+
 
 <%= link_to "Back To Todo List", todos_path%>

@@ -12,7 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2019_11_26_230020) do
 
-# Could not dump table "todos" because of following StandardError
-#   Unknown type 'bool' for column 'isCompleted'
+  create_table "todos", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.boolean "isCompleted", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
 end

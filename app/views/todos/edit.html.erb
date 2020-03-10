@@ -8,6 +8,9 @@
   <%= label_tag(:description, "Description") %>
   <%= f.text_area :description %></br>
 
+  <%= label_tag(:isCompleted, "Completed?") %>
+  <%= f.check_box :isCompleted %></br>
+
   <%= f.submit "Update" %>
 
 <% end %>

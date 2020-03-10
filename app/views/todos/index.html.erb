@@ -1,31 +1,164 @@
-<head> <%= stylesheet_link_tag 'bootstrap.min' %> </head>
-<br>
-&nbsp &nbsp <%= link_to "New Todo Item", new_todo_path %>
-<br>
-<br>
-<% @todos.each do |todo|  %>
-    <li class = "list-group-item"><%= form_for todo do |f| %>
-        <div id="<%= @todo %>", onclick="hideElement()">
-        <%= label_tag(:isCompleted,"" )%>
-        <%= f.check_box :isCompleted %>
-        
+<header>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+        <div class="container">
+            <strong class="navbar-brand waves-effect">To-do List</strong>
         </div>
+    </nav>
+</header>
 
-        <script type="text/javascript"> 
-        function hideElement() { 
-            element = document.getElementById(checkbox"); 
-            element.style.visibility = 'hidden'; 
-        } 
-    </script>       
-    <% end %>
+<body>
+    <main class="mt-5 pt-5">
+        <div class="container">
+            <div class="text-center">
+                <%=form_for @todo do |f| %>
+                    <%=label_tag(:title, "") %>
+                        <%=f.text_field :title, :size => 45 %>
+                            <%= button_tag(type: "submit", class: "btn btn-sm btn-info") do %>
+                                <i class="fa fa-tasks"></i> new task
+                            <% end %>
+                                <% end %>
+                                    </form>
+        </div>
+        &nbsp
+        <h2> <strong> To-Do </strong> </h2>
+          <p class="serif"> "Organize now. Choose your future"</p>
+       
+        <ul id="todo-list" class="list-group">
+            <% @uncompletedTasks.each do |todo| %>
+                <li class="list-group-item">
+                    <%=form_for todo do |f| %>
+                        <div id="<%= todo.id %>" class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" data-id="<%= todo.id %>" class="custom-control-input" id="chk-<%= todo.id %>" name="completedCheckbox">
+                                        <label class="custom-control-label" for="chk-<%= todo.id %>"></label>
+                                    </div>  
+                                    </div>
+                                    <div class="col-md-11">
+                                        <%=link_to todo.title, todo_path(todo.id)%>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <%=link_to '<button type= "button" class="btn btn-sm btn-info"> edit  </button>'.html_safe, edit_todo_path(todo[:id])%>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <%=button_to 'Delete', {:controller=> :todos, :action => 'destroy', :id => todo.id, confirm: "Are you sure you want to delete it?" }, class: "btn btn-sm btn-danger", :method => :delete %>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button  type = "button" class = "reorder-up"><i class="fa fa-arrow-up"></i></button>
+                                        <button class = "reorder-down"><i class="fa fa-arrow-down" aria-hidden="true"></i> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% end %>
+
+                            <% end %>
+        </ul>
+        &nbsp
+         <h3> <strong> Completed </strong> </h3>
+        <ul id="completed-list" class="list-group">
+            <% @completedTasks.each do |todo| %>
+                <li class="list-group-item completed-list">
+                    <%=form_for todo do |f| %>
+                        <div id="<%= todo.id %>" class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="<%= todo.isCompleted %>" data-id="<%= todo.id %>" class="custom-control-input" id="chk-<%= todo.id %>" name="completedCheckbox">
+                                        <label class="custom-control-label" for="chk-<%= todo.id %>"></label>
+                                    </div>  
+                                    </div>
+                                    <div class="col-md-11">
+                                        <%=link_to todo.title, todo_path(todo.id)%>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <%=link_to '<button type= "button" class="btn btn-sm btn-info"> edit  </button>'.html_safe, edit_todo_path(todo[:id])%>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <%=button_to 'Delete', {:controller=> :todos, :action => 'destroy', :id => todo.id, confirm: "Are you sure you want to delete it?" }, class: "btn btn-sm btn-danger", :method => :delete %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% end %>
+
+                            <% end %>
+        </ul>
+    </main>
+</body>
+<script type="text/javascript">
+   $(document).ready(function() {
+    $('ul#todo-list li input:checkbox').click(function() {
+        var checkbox = $(this);
+        var todoId = checkbox.attr('data-id');
+        $.ajax({
+            type: 'PUT',
+            url: "/todos/updatecompleted?id=" + todoId,
+            data: {
+                todo: {
+                    id: todoId,
+                    isCompleted: true
+                }
+            },
+            dataType: 'json',
+            complete: function() {
+                location.reload();
+            }
+        });
+       
+    });
+
+    $('ul#completed-list li input:checkbox').click(function() {
+        var checkbox = $(this);
+        var todoId = checkbox.attr('data-id');
+
+        $.ajax({
+            type: 'PUT',
+            url: "/todos/updatecompleted?id=" + todoId,
+            data: {
+                todo: {
+                    id: todoId,
+                    isCompleted: false
+                }
+            },
+            dataType: 'json',
+            complete: function() {
+                location.reload();
+            }
+        });
+        
+        checkbox.prop("checked", false);
+    });
+  });
+   $(".reorder-up").click(function(){
+    var $current = $(this).closest('li')
+    var $previous = $current.prev('li');
+    if($previous.length !== 0){
+    $current.insertBefore($previous);
+      }
+    return false;
+ });
+
+   $(".reorder-down").click(function(){
+    var $current = $(this).closest('li')
+    var $next = $current.next('li');
+    if($next.length !== 0){
+    $current.insertAfter($next);
+     }
+   return false;
+});
     
-    <%= link_to todo.title, todo_path(todo.id)%> &nbsp &nbsp
-    <%= link_to  '<button type= "button" class="btn btn-outline-primary"> edit </button>'.html_safe, edit_todo_path(todo[:id])%> 
-    <%= link_to  '<button type= "button" class="btn btn-outline-primary"> delete </button>'.html_safe, todo, method: :delete, data: {confirm: "Are you sure you want to delete it?"}%> </button> </li> 
+</script>
 
- 
-    <br>
-<% end %>
-
-
-
+<body>
